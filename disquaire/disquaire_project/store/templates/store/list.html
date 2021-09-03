@@ -1,0 +1,43 @@
+<div class="col-lg-12">
+    <hr>
+    <h2 class="intro-text text-center">{{ list_title }}
+    </h2>
+    <hr class="detail-separator">
+</div>
+
+
+<ul>
+    {% include 'store/search_form.html' %}
+
+    {% if albums|length_is:"0" %}
+        <div class="text-center">
+        Palsambleu ! Nous n'avons trouvé aucun résultat à cette requête. Même pas de quoi se ronger la chique !
+        Partez de nouveau à l'abordage !
+        </div>
+    {% else %}
+        {% for album in albums %}
+            <li href="{% url 'store:detail' album_id=album.id %}">{{ album.title }}</li>
+    
+            {% for artist in album.artists.all %}
+                <p>{{artist.name}}</p>
+            {% endfor %}
+
+        {% endfor %}
+
+    {% endif %}
+
+</ul>
+
+<div class="clearfix"></div>
+<nav aria-label="...">
+  <ul class="pager">
+    {% if paginate %}
+        {% if albums.has_previous %}
+            <li><a href="?page={{ albums.previous_page_number }}">Précédent</a></li>
+        {% endif %}
+        {% if albums.has_next %}
+        <li><a href="?page={{ albums.next_page_number }}">Suivant</a></li>
+        {% endif %}
+    {% endif %}
+  </ul>
+</nav>
